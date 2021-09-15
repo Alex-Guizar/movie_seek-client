@@ -17,12 +17,15 @@
   },
   "homepage": "https://github.com/Alex-Guizar/movie_seek-client#readme",
   "dependencies": {
+    "axios": "^0.21.4",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
   "devDependencies": {
+    "@babel/core": "^7.15.5",
     "@babel/generator": "^7.15.4",
     "@babel/parser": "^7.15.6",
+    "@babel/preset-env": "^7.15.6",
     "@babel/traverse": "^7.15.4",
     "@parcel/transformer-sass": "^2.0.0-rc.0"
   }
