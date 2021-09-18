@@ -2,8 +2,11 @@ import React from 'react';
 import axios from 'axios';
 
 import { LoginView } from '../login-view/login-view';
-import { MovieCard } from '../movie-card/movie-card.jsx';
-import { MovieView } from '../movie-view/movie-view.jsx';
+import { RegistrationView } from '../registration-view/registration-view';
+import { MovieCard } from '../movie-card/movie-card';
+import { MovieView } from '../movie-view/movie-view';
+
+import './main-view.scss';
 
 class MainView extends React.Component {
   constructor() {
@@ -11,7 +14,8 @@ class MainView extends React.Component {
     this.state = {
       movies: [],
       selectedMovie: null,
-      user: null
+      user: null,
+      register: false
     };
   }
 
@@ -31,6 +35,13 @@ class MainView extends React.Component {
     });
   }
 
+  /** Set register to true to render the registration form */
+  setRegister() {
+    this.setState({
+      register: true
+    });
+  }
+
   /** When a user successfully logs in, this function updates the `user` property in the stat to that particular user */
   onLoggedIn(user) {
     this.setState({
@@ -38,11 +49,22 @@ class MainView extends React.Component {
     });
   }
 
+  /** When a user successfully registers, update the `register` property to false and the `user` property to the registered user */
+  onRegistration(user) {
+    this.setState({
+      user,
+      register: false
+    });
+  }
+
   render() {
-    const { movies, selectedMovie } = this.state;
+    const { movies, selectedMovie, user, register } = this.state;
+
+    /** If user selects to register, the RegistrationView is rendered */
+    if (register) return <RegistrationView onRegistration={user => this.onRegistration(user)} />
 
     /** If there is no user, the LoginView is rendered. If there is a user logged in, the user details are passed as a prop to the LoginView */
-    if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />;
+    if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} setRegister={() => this.setRegister()} />;
     
     // Before the movies have been loaded
     if (movies.length === 0) return <div className="main-view" />;
