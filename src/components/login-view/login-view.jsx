@@ -39,7 +39,7 @@ export function LoginView(props) {
           Submit
         </Button>
       </Form>
-      <p><a href="#" onClick={handleRegister}>Don't have an account? Click here to register!</a></p>
+      <p className="mt-3"><a href="#" onClick={handleRegister}>Don't have an account? Click here to register!</a></p>
     </React.Fragment>
   );
 }
