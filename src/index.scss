@@ -1,5 +1,16 @@
-$color: steelblue;
+$color: #A2290F;
 
-.movie-seek {
-  color: $color;
+/** Bootstrap Overwrites */
+.navbar {
+  background-color: #262E47;
+}
+
+.btn-primary {
+  background-color: $color;
+  border-color: $color;
+
+  &:hover {
+    background-color: darken($color, 10%);
+    border-color: darken($color, 10%);
+  }
 }
