@@ -23238,8 +23238,8 @@ var MainView1 = /*#__PURE__*/ function(_React$Component) {
                                     lineNumber: 152
                                 },
                                 __self: this
-                            }, movie._id)
-                        }));
+                            })
+                        }, movie._id));
                     })
                 }));
             }
