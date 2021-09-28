@@ -3,7 +3,21 @@
 
 
 
-.movie-seek {
-  color: steelblue;
+body {
+  font-family: "Roboto", sans-serif;
+}
+
+/** Bootstrap Overwrites */
+.navbar {
+  background-color: #262E47;
+}
+
+.btn-primary {
+  background-color: #A2290F;
+  border-color: #A2290F;
+}
+.btn-primary:hover {
+  background-color: #731d0b;
+  border-color: #731d0b;
 }
 /*# sourceMappingURL=index.1d334ea1.css.map */
