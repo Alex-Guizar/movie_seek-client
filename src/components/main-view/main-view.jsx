@@ -23,7 +23,6 @@ class MainView extends React.Component {
     super();
     this.state = {
       movies: [],
-      selectedMovie: null,
       user: null,
       register: false
     };
@@ -37,13 +36,6 @@ class MainView extends React.Component {
       });
       this.getMovies(accessToken);
     }
-  }
-
-  /** When a movie is clicked, this function is invoked and updates the state of the `selectedMovie` property to that movie */
-  setSelectedMovie(movie) {
-    this.setState({
-      selectedMovie: movie
-    });
   }
 
   /** Set register to true to render the registration form */
@@ -97,7 +89,7 @@ class MainView extends React.Component {
   }
 
   render() {
-    const { movies, selectedMovie, user, register } = this.state;
+    const { movies, user } = this.state;
 
     return (
       <Router>
@@ -111,7 +103,7 @@ class MainView extends React.Component {
             if (movies.length === 0) return <div className="main-view" />;
 
             return movies.map(m => (
-              <Col md={3} key={m._id}>
+              <Col className="mt-3" md={3} key={m._id}>
                 <MovieCard movie={m} />
               </Col>
             ))
@@ -164,15 +156,17 @@ class MainView extends React.Component {
             </Col>
           }} />
 
-          <Route exact path='/users/:username' render={({ history }) => {
+          <Route exact path='/users/:username' render={() => {
             /** If there is no user, the LoginView is rendered. If there is a user logged in, the user details are passed as a prop to the LoginView */
             if (!user) return <Col>
               <LoginView onLoggedIn={user => this.onLoggedIn(user)} setRegister={() => this.setRegister()} />
             </Col>
 
             if (movies.length === 0) return <div className="main-view" />;
-
-            return <ProfileView history={history} movies={movies} />
+            
+            return <Col>
+              <ProfileView movies={movies} />
+            </Col>
           }} />
         </Row>
       </Router>
