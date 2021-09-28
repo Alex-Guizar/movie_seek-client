@@ -2,10 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
+/** React-Bootstrap Components */
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import ListGroup from 'react-bootstrap/Listgroup';
 
 import './profile-view.scss';
 
@@ -58,7 +60,7 @@ export class ProfileView extends React.Component {
         Birthday: data.Birthday,
         Password: data.Password,
         FavoriteMovies: data.FavoriteMovies
-      })
+      });
     })
     .catch(function (err) {
       console.error(err);
@@ -82,7 +84,12 @@ export class ProfileView extends React.Component {
     })
     .then(response => {
       const data = response.data;
-      console.log(data);
+      this.setState({
+        Username: data.Username,
+        Email: data.Email,
+        Birthday: data.Birthday,
+        Password: data.Password
+      });
     })
     .catch(function (err) {
       console.error(err);
@@ -116,7 +123,9 @@ export class ProfileView extends React.Component {
     })
     .then(response => {
       const data = response.data;
-      console.log(data);
+      this.setState({
+        FavoriteMovies: data.FavoriteMovies
+      });
     })
     .catch(function (err) {
       console.error(err);
@@ -124,6 +133,9 @@ export class ProfileView extends React.Component {
   }
 
   render() {
+    const { movies } = this.props;
+    const { FavoriteMovies } = this.state;
+
     return (
       <Row>
         <Col>
@@ -154,7 +166,7 @@ export class ProfileView extends React.Component {
             <Button variant="primary" type="submit">Update</Button>
           </Form>
 
-          <h3>Delete Your Account</h3>
+          <h3 className="mt-4">Delete Your Account</h3>
           {/* Form to delete account */}
           <Form>
             <Button variant="danger" type="submit">Delete Account</Button>
@@ -163,9 +175,22 @@ export class ProfileView extends React.Component {
         
         <Col>
           <h2>Favorite Movies</h2>
-          {/* Iterate through favorite movie list */}
+
+          {/* Iterate through favorite movie list then match id to item in full movie list */}
+          <ListGroup>
+            {FavoriteMovies.map(favMovie => (
+              <ListGroup.Item className="d-flex align-items-center" key={favMovie}>
+                {movies.find(m => m._id === favMovie).Title}
+                <Button className="ml-auto" variant="link" onClick={e => {this.removeFavorite(e, favMovie)}}>Remove</Button>
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
         </Col>
       </Row>
     );
   }
+}
+
+ProfileView.propTypes = {
+  movies: PropTypes.array.isRequired
 }
