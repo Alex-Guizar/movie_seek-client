@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -9,9 +10,20 @@ import Button from 'react-bootstrap/Button';
 import './profile-view.scss';
 
 export class ProfileView extends React.Component {
+  constructor() {
+    super();
 
-  setName(input) {
-    this.Name = input;
+    this.state = {
+      Username: null,
+      Email: null,
+      Birthday: null,
+      Password: null,
+      FavoriteMovies: []
+    };
+  }
+
+  componentDidMount() {
+    this.getUserInfo();
   }
 
   setUsername(input) {
@@ -30,8 +42,85 @@ export class ProfileView extends React.Component {
     this.Password = input;
   }
 
-  handleUpdate() {
+  getUserInfo() {
+    const token = localStorage.getItem('token');
+    const userName = localStorage.getItem('user');
 
+    axios.get(`https://movie-seek-1949.herokuapp.com/users/${userName}`, {
+      headers: { Authorization: `Bearer ${token}`}
+    })
+    .then(response => {
+      const data = response.data;
+      console.log(data);
+      this.setState({
+        Username: data.Username,
+        Email: data.Email,
+        Birthday: data.Birthday,
+        Password: data.Password,
+        FavoriteMovies: data.FavoriteMovies
+      })
+    })
+    .catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  handleUpdate(e) {
+    e.preventDefault();
+    const token = localStorage.getItem('token');
+    const userName = localStorage.getItem('user');
+
+    console.log(this.state)
+
+    axios.put(`https://movie-seek-1949.herokuapp.com/users/${userName}`, {
+      Username: this.Username ? this.Username : this.state.Username,
+      Password: this.Password ? this.Password : this.state.Password,
+      Email: this.Email ? this.Email : this.state.Email,
+      Birthdate: this.Birthday ? this.Birthday : this.state.Birthday
+    }, {
+      headers: { Authorization: `Bearer ${token}`}
+    })
+    .then(response => {
+      const data = response.data;
+      console.log(data);
+    })
+    .catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  deleteProfile(e) {
+    e.preventDefault();
+    const token = localStorage.getItem('token');
+    const userName = localStorage.getItem('user');
+
+    axios.delete(`https://movie-seek-1949.herokuapp.com/users/${userName}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(response => {
+      const data = response.data;
+      console.log(data);
+    })
+    .catch(function (err) {
+      console.error(err);
+    });
+  }
+
+  removeFavorite(e, movieID) {
+    e.preventDefault();
+    const token = localStorage.getItem('token');
+    const userName = localStorage.getItem('user');
+
+    axios.delete(`https://movie-seek-1949.herokuapp.com/users/${userName}/movies/${movieID}`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(response => {
+      const data = response.data;
+      console.log(data);
+    })
+    .catch(function (err) {
+      console.error(err);
+    });
   }
 
   render() {
@@ -41,12 +130,7 @@ export class ProfileView extends React.Component {
           <h2>Update Profile</h2>
 
           {/* Form to update profile information */}
-          <Form onSubmit={e => this.handleUpdate()}>
-            <Form.Group>
-              <Form.Label>Name</Form.Label>
-              <Form.Control type="text" onChange={e => this.setName(e.target.value)} />
-            </Form.Group>
-            
+          <Form onSubmit={e => this.handleUpdate(e)}>
             <Form.Group>
               <Form.Label>Username</Form.Label>
               <Form.Control type="text" onChange={e => this.setUsername(e.target.value)} />
