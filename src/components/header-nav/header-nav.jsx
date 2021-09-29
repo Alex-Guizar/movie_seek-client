@@ -11,7 +11,7 @@ export class HeaderNav extends React.Component {
     return (
       <Navbar variant="dark">
         <Container>
-          <Navbar.Brand href="#home">Movie Seek</Navbar.Brand>
+          <Navbar.Brand href="/">Movie Seek</Navbar.Brand>
         </Container>
       </Navbar>
     );
