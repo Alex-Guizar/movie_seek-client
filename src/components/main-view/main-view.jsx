@@ -65,14 +65,6 @@ class MainView extends React.Component {
     });
   }
 
-  /** When a user successfully registers, update the `register` property to false and the `user` property to the registered user */
-  onRegistration(user) {
-    this.setState({
-      user,
-      register: false
-    });
-  }
-
   getMovies(token) {
     axios.get('https://movie-seek-1949.herokuapp.com/movies', {
       headers: { Authorization: `Bearer ${token}` }
