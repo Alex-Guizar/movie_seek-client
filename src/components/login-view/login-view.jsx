@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
+
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
@@ -9,12 +11,26 @@ export function LoginView(props) {
   const [ username, setUsername ] = useState('');
   const [ password, setPassword ] = useState('');
 
+  const [ errorText, setErrorText ] = useState('');
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(username, password);
-    /* Send a request to the server for authentication */
-    /* then call props.onLoggedIn(username) */
-    props.onLoggedIn(username);
+    const isValid = formValidation();
+
+    if (isValid) {
+      /** Send a request to the server for authentication */
+      axios.post('https://movie-seek-1949.herokuapp.com/login', {
+        Username: username,
+        Password: password
+      })
+      .then(response => {
+        const data = response.data;
+        props.onLoggedIn(data);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+    }
   }
 
   /** Set view to registration */
@@ -23,17 +39,47 @@ export function LoginView(props) {
     props.setRegister();
   }
 
+  const formValidation = () => {
+    let isValid = true;
+    let formErrors = {};
+
+    if (username === '') {
+      formErrors.username = 'Username is required';
+      isValid = false;
+    }
+
+    if (password === '') {
+      formErrors.password = 'Password is required';
+      isValid = false;
+    }
+
+    setErrorText(formErrors);
+    return isValid;
+  }
+
   return (
     <React.Fragment>
       <Form>
         <Form.Group controlId="formUsername">
           <Form.Label>Username:</Form.Label>
-          <Form.Control type="text" onChange={e => setUsername(e.target.value)} />
+          <Form.Control 
+            required 
+            type="text" 
+            onChange={e => setUsername(e.target.value)} 
+          />
+          {/* Check if `errorText` is not empty and contains 'username' as a key */}
+          { (errorText && 'username' in errorText) ? <p className="text-danger">{errorText['username']}</p> : '' }
         </Form.Group>
 
         <Form.Group controlId="formPassword">
           <Form.Label>Password:</Form.Label>
-          <Form.Control type="password" onChange={e => setPassword(e.target.value)} />
+          <Form.Control 
+            required 
+            type="password" 
+            onChange={e => setPassword(e.target.value)} 
+          />
+          {/* Check if `errorText` is not empty and contains 'password' as a key */}
+          { (errorText && 'password' in errorText) ? <p className="text-danger">{errorText['password']}</p> : '' }
         </Form.Group>
         <Button variant="primary" type="submit" onClick={handleSubmit}>
           Submit
