@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Alert from 'react-bootstrap/Alert';
 
 import './login-view.scss';
 
@@ -11,6 +13,7 @@ export function LoginView(props) {
   const [ username, setUsername ] = useState('');
   const [ password, setPassword ] = useState('');
 
+  const [ loginError, setLoginError ] = useState('');
   const [ errorText, setErrorText ] = useState('');
 
   const handleSubmit = (e) => {
@@ -29,14 +32,9 @@ export function LoginView(props) {
       })
       .catch(err => {
         console.error(err);
+        setLoginError(err);
       });
     }
-  }
-
-  /** Set view to registration */
-  const handleRegister = (e) => {
-    e.preventDefault();
-    props.setRegister();
   }
 
   const formValidation = () => {
@@ -60,6 +58,7 @@ export function LoginView(props) {
   return (
     <React.Fragment>
       <Form>
+        { loginError ? <Alert variant="danger">That User and Password combo didn't work. Please try again.</Alert> : '' }
         <Form.Group controlId="formUsername">
           <Form.Label>Username:</Form.Label>
           <Form.Control 
@@ -85,12 +84,15 @@ export function LoginView(props) {
           Submit
         </Button>
       </Form>
-      <p className="mt-3"><a href="#" onClick={handleRegister}>Don't have an account? Click here to register!</a></p>
+      <p className="mt-3">
+        <Link to="/register">
+          Don't have an account? Click here to register!
+        </Link>
+      </p>
     </React.Fragment>
   );
 }
 
 LoginView.propTypes = {
-  onLoggedIn: PropTypes.func.isRequired,
-  setRegister: PropTypes.func.isRequired
+  onLoggedIn: PropTypes.func.isRequired
 };
