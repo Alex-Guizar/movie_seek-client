@@ -1,15 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import Col from 'react-bootstrap/Col';
 
 import VisibilityFilterInput from '../visibility-filter-input/visibility-filter-input';
 import { MovieCard } from '../movie-card/movie-card';
-
-const mapStateToProps = state => {
-  const { visibilityFilter } = state;
-  return { visibilityFilter };
-}
 
 function MoviesList(props) {
   const { movies, visibilityFilter } = props;
@@ -31,6 +27,16 @@ function MoviesList(props) {
       </Col>
     ))}
   </>;
+}
+
+const mapStateToProps = state => {
+  const { visibilityFilter } = state;
+  return { visibilityFilter };
+}
+
+MoviesList.propTypes = {
+  movies: PropTypes.array.isRequired,
+  visibilityFilter: PropTypes.string.isRequired
 }
 
 export default connect(mapStateToProps)(MoviesList);

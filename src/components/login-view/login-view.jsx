@@ -1,20 +1,35 @@
+// Packages
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
+// Actions
+import { setUser } from '../../actions/actions';
+
+// React-Bootstrap Components
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 
 import './login-view.scss';
 
-export function LoginView(props) {
+function LoginView(props) {
   const [ username, setUsername ] = useState('');
   const [ password, setPassword ] = useState('');
 
   const [ loginError, setLoginError ] = useState('');
   const [ errorText, setErrorText ] = useState('');
+
+  const onLoggedIn = authData => {
+    console.log(authData);
+    props.setUser(authData.user.Username);
+
+    localStorage.setItem('token', authData.token);
+    localStorage.setItem('user', authData.user.Username);
+    props.getMovies(authData.token);
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -28,7 +43,7 @@ export function LoginView(props) {
       })
       .then(response => {
         const data = response.data;
-        props.onLoggedIn(data);
+        onLoggedIn(data);
       })
       .catch(err => {
         console.error(err);
@@ -93,6 +108,14 @@ export function LoginView(props) {
   );
 }
 
+const mapStateToProps = state => {
+  return { user: state.user }
+}
+
 LoginView.propTypes = {
-  onLoggedIn: PropTypes.func.isRequired
+  user: PropTypes.string.isRequired,
+  setUser: PropTypes.func.isRequired,
+  getMovies: PropTypes.func.isRequired
 };
+
+export default connect(mapStateToProps, { setUser })(LoginView);
