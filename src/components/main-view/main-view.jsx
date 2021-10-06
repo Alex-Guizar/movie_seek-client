@@ -1,6 +1,7 @@
 // Packages
 import React from 'react';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import { connect } from 'react-redux';
 
@@ -142,6 +143,13 @@ let mapStateToProps = state => {
     movies: state.movies,
     user: state.user
   }
+}
+
+MainView.propTypes = {
+  movies: PropTypes.array.isRequired,
+  user: PropTypes.string.isRequired,
+  setMovies: PropTypes.func.isRequired,
+  setUser: PropTypes.func.isRequired
 }
 
 export default connect(mapStateToProps, { setMovies, setUser })(MainView);
