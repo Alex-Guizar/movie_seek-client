@@ -42,13 +42,6 @@ class MainView extends React.Component {
     this.getMovies(authData.token);
   }
 
-  onLoggedOut() {
-    console.log('onLoggedOut');
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    this.props.setUser('');
-  }
-
   getMovies(token) {
     axios.get('https://movie-seek-1949.herokuapp.com/movies', {
       headers: { Authorization: `Bearer ${token}` }
@@ -139,7 +132,6 @@ class MainView extends React.Component {
             </Col>
           }} />
         </Row>
-        <Button variant="primary" onClick={() => this.onLoggedOut()}>Log Out</Button>
       </Router>
     );
   }
