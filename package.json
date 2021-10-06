@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "default": "src/index.html",
+  "main": "src/index.html",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,6 +19,7 @@
   "homepage": "https://github.com/Alex-Guizar/movie_seek-client#readme",
   "dependencies": {
     "axios": "^0.21.4",
+    "parcel": "^2.0.0-rc.0",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-bootstrap": "^1.6.3",
