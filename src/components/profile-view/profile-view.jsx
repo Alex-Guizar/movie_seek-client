@@ -7,7 +7,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import ListGroup from 'react-bootstrap/Listgroup';
+import ListGroup from 'react-bootstrap/ListGroup';
 
 import './profile-view.scss';
 
