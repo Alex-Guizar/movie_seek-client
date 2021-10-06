@@ -10,7 +10,7 @@ import { setMovies, setUser } from '../../actions/actions';
 
 // Custom Components
 import MoviesList from '../movies-list/movies-list';
-import { LoginView } from '../login-view/login-view';
+import LoginView from '../login-view/login-view';
 import { RegistrationView } from '../registration-view/registration-view';
 import { MovieView } from '../movie-view/movie-view';
 import { DirectorView } from '../director-view/director-view';
@@ -20,7 +20,6 @@ import { ProfileView } from '../profile-view/profile-view';
 // React-Bootstrap Components
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import Button from 'react-bootstrap/Button';
 
 import './main-view.scss';
 
@@ -31,16 +30,6 @@ class MainView extends React.Component {
       this.props.setUser(localStorage.getItem('user'));
       this.getMovies(accessToken);
     }
-  }
-
-  /** When a user successfully logs in, this function updates the `user` property in the stat to that particular user */
-  onLoggedIn(authData) {
-    console.log(authData);
-    this.props.setUser(authData.user.Username);
-
-    localStorage.setItem('token', authData.token);
-    localStorage.setItem('user', authData.user.Username);
-    this.getMovies(authData.token);
   }
 
   getMovies(token) {
@@ -65,7 +54,7 @@ class MainView extends React.Component {
           <Route exact path="/" render={() => {
             /** If there is no user, the LoginView is rendered. If there is a user logged in, the user details are passed as a prop to the LoginView */
             if (!user) return <Col>
-              <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
+              <LoginView getMovies={token => this.getMovies(token)} />
             </Col>
 
             if (movies.length === 0) return <div className="main-view" />;
@@ -83,7 +72,7 @@ class MainView extends React.Component {
           <Route path="/movies/:movieId" render={({ match, history }) => {
             /** If there is no user, the LoginView is rendered. If there is a user logged in, the user details are passed as a prop to the LoginView */
             if (!user) return <Col>
-              <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
+              <LoginView getMovies={token => this.getMovies(token)} />
             </Col>
 
             if (movies.length === 0) return <div className="main-view" />;
@@ -96,7 +85,7 @@ class MainView extends React.Component {
           <Route path="/directors/:name" render={({ match, history }) => {
             /** If there is no user, the LoginView is rendered. If there is a user logged in, the user details are passed as a prop to the LoginView */
             if (!user) return <Col>
-              <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
+              <LoginView getMovies={token => this.getMovies(token)} />
             </Col>
 
             if (movies.length === 0) return <div className="main-view" />;
@@ -110,7 +99,7 @@ class MainView extends React.Component {
           <Route path="/genres/:name" render={({ match, history }) => {
             /** If there is no user, the LoginView is rendered. If there is a user logged in, the user details are passed as a prop to the LoginView */
             if (!user) return <Col>
-              <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
+              <LoginView getMovies={token => this.getMovies(token)} />
             </Col>
 
             if (movies.length === 0) return <div className="main-view" />;
@@ -123,7 +112,7 @@ class MainView extends React.Component {
           <Route exact path='/users/:username' render={() => {
             /** If there is no user, the LoginView is rendered. If there is a user logged in, the user details are passed as a prop to the LoginView */
             if (!user) return <Col>
-              <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
+              <LoginView getMovies={token => this.getMovies(token)} />
             </Col>
 
             if (movies.length === 0) return <div className="main-view" />;

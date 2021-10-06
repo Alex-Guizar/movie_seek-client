@@ -17,7 +17,6 @@ import './header-nav.scss';
 
 function HeaderNav(props) {
   function onLoggedOut() {
-    console.log('onLoggedOut');
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     props.setUser('');
