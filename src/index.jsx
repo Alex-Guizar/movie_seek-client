@@ -8,7 +8,7 @@ import { devToolsEnhancer } from 'redux-devtools-extension';
 import moviesApp from './reducers/reducers';
 // Imported Custom Components
 import MainView from './components/main-view/main-view';
-import { HeaderNav } from './components/header-nav/header-nav';
+import HeaderNav from './components/header-nav/header-nav';
 
 // Imported React-Bootstrap Components
 import Container from 'react-bootstrap/Container';
