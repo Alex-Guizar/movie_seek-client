@@ -14,7 +14,7 @@ export class MovieView extends React.Component {
 
     return (
       <Card>
-        <Card.Img variant="top" src={movie.ImagePath} />
+        <Card.Img className="card-img-top--max-width" variant="top" src={`../images/${movie.ImagePath}`} />
         <Card.Body>
           <Card.Title>{movie.Title}</Card.Title>
           <Card.Text>{movie.Description}</Card.Text>
