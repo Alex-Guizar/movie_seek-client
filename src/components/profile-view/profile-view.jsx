@@ -1,17 +1,23 @@
+// Packages
 import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { connect } from 'react-redux';
 
-/** React-Bootstrap Components */
+// Actions
+import { setUser, setFavorites } from '../../actions/actions';
+
+// React-Bootstrap Components
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import ListGroup from 'react-bootstrap/ListGroup';
+import Alert from 'react-bootstrap/Alert';
 
 import './profile-view.scss';
 
-export class ProfileView extends React.Component {
+class ProfileView extends React.Component {
   constructor() {
     super();
 
@@ -21,7 +27,8 @@ export class ProfileView extends React.Component {
       Birthday: null,
       Password: null,
       FavoriteMovies: [],
-      errorText: {}
+      errorText: {},
+      updateSuccess: false
     };
   }
 
@@ -51,6 +58,12 @@ export class ProfileView extends React.Component {
     });
   }
 
+  setUpdateSuccess() {
+    this.setState({
+      updateSuccess: true
+    });
+  }
+
   getUserInfo() {
     const token = localStorage.getItem('token');
     const userName = localStorage.getItem('user');
@@ -60,7 +73,6 @@ export class ProfileView extends React.Component {
     })
     .then(response => {
       const data = response.data;
-      console.log(data);
       this.setState({
         Username: data.Username,
         Email: data.Email,
@@ -95,8 +107,10 @@ export class ProfileView extends React.Component {
           Username: data.Username,
           Email: data.Email,
           Birthday: data.Birthday,
-          Password: data.Password
+          Password: data.Password,
+          updateSuccess: true
         });
+        localStorage.setItem('user', data.Username);
       })
       .catch(function (err) {
         console.error(err);
@@ -113,8 +127,10 @@ export class ProfileView extends React.Component {
       headers: { Authorization: `Bearer ${token}` }
     })
     .then(response => {
-      const data = response.data;
-      console.log(data);
+      // Remove all local storage items
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      localStorage.removeItem('favorites');
     })
     .catch(function (err) {
       console.error(err);
@@ -134,6 +150,8 @@ export class ProfileView extends React.Component {
       this.setState({
         FavoriteMovies: data.FavoriteMovies
       });
+      this.props.setFavorites(data.FavoriteMovies);
+      localStorage.setItem('favorites', JSON.stringify(data.FavoriteMovies));
     })
     .catch(function (err) {
       console.error(err);
@@ -159,19 +177,24 @@ export class ProfileView extends React.Component {
       isValid = false;
     }
 
-    setErrorText(formErrors);
+    this.setErrorText(formErrors);
     return isValid;
   }
 
   render() {
     const { movies } = this.props;
-    const { FavoriteMovies, errorText } = this.state;
+    const { FavoriteMovies, errorText, updateSuccess } = this.state;
 
     return (
       <Row>
         <Col>
           <h2>Update Profile</h2>
 
+          {/** Check if updateSuccess is true and there are no errors, then display success alert */}
+          {updateSuccess && Object.keys(errorText).length === 0
+            ? <Alert variant="success">Profile Updated</Alert>
+            : ''
+          }
           {/* Form to update profile information */}
           <Form onSubmit={e => this.handleUpdate(e)}>
             <Form.Group>
@@ -217,7 +240,7 @@ export class ProfileView extends React.Component {
 
           <h3 className="mt-4">Delete Your Account</h3>
           {/* Form to delete account */}
-          <Form>
+          <Form onSubmit={e => this.deleteProfile(e)}>
             <Button variant="danger" type="submit">Delete Account</Button>
           </Form>
         </Col>
@@ -240,6 +263,15 @@ export class ProfileView extends React.Component {
   }
 }
 
-ProfileView.propTypes = {
-  movies: PropTypes.array.isRequired
+const mapStateToProps = state => {
+  return { favorites: state.favorites }
 }
+
+ProfileView.propTypes = {
+  movies: PropTypes.array.isRequired,
+  favorites: PropTypes.array.isRequired,
+  setUser: PropTypes.func.isRequired,
+  setFavorites: PropTypes.func.isRequired
+}
+
+export default connect(mapStateToProps, { setUser, setFavorites })(ProfileView);
