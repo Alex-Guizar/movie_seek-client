@@ -26,29 +26,43 @@ After cloning the repository, you may run either `yarn` or `npm install` to inst
 
 Displays full list of movies when logged in. Component used for navigation to other views.
 
+![Main view showing movie covers and descriptions](/readmeImages/main-view.jpg)
+
 ### Login View
 
 Allows the user to log in with a username and password. Main entry point for users. Connects to the registration view for any user that needs to create an account.
+
+![Login view with input fields](/readmeImages/login-view.jpg)
 
 ### Registration View
 
 Allows the user to create a profile by entering a username, email, password, and optionally a birthday.
 
+![Registration view with input fields](/readmeImages/registration-view.jpg)
+
 ### Profile View
 
 Allows user to edit their personal information. Allows user to remove movies from their favorites list.
+
+![Profile view with input fields and favorite movies list](/readmeImages/profile-view.jpg)
 
 ### Movie View
 
 Displays the title and description about the selected movie. Connects to the director and genre views.
 
+![Movie view showing movie cover and description](/readmeImages/movie-view.jpg)
+
 ### Director View
 
 Displays the name, bio, birth date, and death date about the selected director.
 
+![Director view showing director information](/readmeImages/director-view.jpg)
+
 ### Genre View
 
 Displays the name and description about the selected genre.
+
+![Genre view showing information about the seleted genre](/readmeImages/genre-view.jpg)
 
 ## Dependencies
 
