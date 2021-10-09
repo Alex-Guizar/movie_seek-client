@@ -1,0 +1,21 @@
+.card {
+  &--full-height {
+    height: 100%;
+  }
+
+  &-img-top--max-width {
+    max-width: 250px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  &-body--body-flex {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &-actions {
+    margin-top: auto;
+    display: flex;
+  }
+}

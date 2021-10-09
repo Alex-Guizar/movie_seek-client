@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import { devToolsEnhancer } from 'redux-devtools-extension';
+import { BrowserRouter as Router } from "react-router-dom";
 
 import moviesApp from './reducers/reducers';
 // Imported Custom Components
@@ -23,10 +24,12 @@ class MovieSeekApplication extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        <HeaderNav />
-        <Container className="py-3">
-          <MainView />
-        </Container>
+        <Router>
+          <HeaderNav />
+          <Container className="py-3">
+            <MainView />
+          </Container>
+        </Router>
       </Provider>
     );
   }
