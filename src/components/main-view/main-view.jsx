@@ -49,80 +49,78 @@ class MainView extends React.Component {
     let { movies, user } = this.props;
 
     return (
-      <Router>
-        <Row className="main-view justify-content-md-center">
-          <Route exact path="/" render={() => {
-            /** If there is no user, the LoginView is rendered. If there is a user logged in, the user details are passed as a prop to the LoginView */
-            if (!user) return <Col>
-              <LoginView getMovies={token => this.getMovies(token)} />
-            </Col>
+      <Row className="main-view justify-content-md-center">
+        <Route exact path="/" render={() => {
+          /** If there is no user, the LoginView is rendered. If there is a user logged in, the user details are passed as a prop to the LoginView */
+          if (!user) return <Col>
+            <LoginView getMovies={token => this.getMovies(token)} />
+          </Col>
 
-            if (movies.length === 0) return <div className="main-view" />;
+          if (movies.length === 0) return <div className="main-view" />;
 
-            return <MoviesList movies={movies} />;
-          }} />
+          return <MoviesList movies={movies} />;
+        }} />
 
-          <Route path="/register" render={() => {
-            if (user) return <Redirect to="/" />
-            return <Col>
-              <RegistrationView />
-            </Col>
-          }} />
+        <Route path="/register" render={() => {
+          if (user) return <Redirect to="/" />
+          return <Col>
+            <RegistrationView />
+          </Col>
+        }} />
 
-          <Route path="/movies/:movieId" render={({ match, history }) => {
-            /** If there is no user, the LoginView is rendered. If there is a user logged in, the user details are passed as a prop to the LoginView */
-            if (!user) return <Col>
-              <LoginView getMovies={token => this.getMovies(token)} />
-            </Col>
+        <Route path="/movies/:movieId" render={({ match, history }) => {
+          /** If there is no user, the LoginView is rendered. If there is a user logged in, the user details are passed as a prop to the LoginView */
+          if (!user) return <Col>
+            <LoginView getMovies={token => this.getMovies(token)} />
+          </Col>
 
-            if (movies.length === 0) return <div className="main-view" />;
+          if (movies.length === 0) return <div className="main-view" />;
 
-            return <Col md={8}>
-              <MovieView movie={movies.find(m => m._id === match.params.movieId)} onBackClick={() => history.goBack()} />
-            </Col>
-          }} />
+          return <Col md={8}>
+            <MovieView movie={movies.find(m => m._id === match.params.movieId)} onBackClick={() => history.goBack()} />
+          </Col>
+        }} />
 
-          <Route path="/directors/:name" render={({ match, history }) => {
-            /** If there is no user, the LoginView is rendered. If there is a user logged in, the user details are passed as a prop to the LoginView */
-            if (!user) return <Col>
-              <LoginView getMovies={token => this.getMovies(token)} />
-            </Col>
+        <Route path="/directors/:name" render={({ match, history }) => {
+          /** If there is no user, the LoginView is rendered. If there is a user logged in, the user details are passed as a prop to the LoginView */
+          if (!user) return <Col>
+            <LoginView getMovies={token => this.getMovies(token)} />
+          </Col>
 
-            if (movies.length === 0) return <div className="main-view" />;
+          if (movies.length === 0) return <div className="main-view" />;
 
-            return <Col md={8}>
-              <DirectorView director={movies.find(m => m.Director.Name === match.params.name).Director} onBackClick={() => history.goBack()} />
-            </Col>
-          }
-          } />
+          return <Col md={8}>
+            <DirectorView director={movies.find(m => m.Director.Name === match.params.name).Director} onBackClick={() => history.goBack()} />
+          </Col>
+        }
+        } />
 
-          <Route path="/genres/:name" render={({ match, history }) => {
-            /** If there is no user, the LoginView is rendered. If there is a user logged in, the user details are passed as a prop to the LoginView */
-            if (!user) return <Col>
-              <LoginView getMovies={token => this.getMovies(token)} />
-            </Col>
+        <Route path="/genres/:name" render={({ match, history }) => {
+          /** If there is no user, the LoginView is rendered. If there is a user logged in, the user details are passed as a prop to the LoginView */
+          if (!user) return <Col>
+            <LoginView getMovies={token => this.getMovies(token)} />
+          </Col>
 
-            if (movies.length === 0) return <div className="main-view" />;
+          if (movies.length === 0) return <div className="main-view" />;
 
-            return <Col md={8}>
-              <GenreView genre={movies.find(m => m.Genre.Name === match.params.name).Genre} onBackClick={() => history.goBack()} />
-            </Col>
-          }} />
+          return <Col md={8}>
+            <GenreView genre={movies.find(m => m.Genre.Name === match.params.name).Genre} onBackClick={() => history.goBack()} />
+          </Col>
+        }} />
 
-          <Route exact path='/users/:username' render={() => {
-            /** If there is no user, the LoginView is rendered. If there is a user logged in, the user details are passed as a prop to the LoginView */
-            if (!user) return <Col>
-              <LoginView getMovies={token => this.getMovies(token)} />
-            </Col>
+        <Route exact path='/users/:username' render={() => {
+          /** If there is no user, the LoginView is rendered. If there is a user logged in, the user details are passed as a prop to the LoginView */
+          if (!user) return <Col>
+            <LoginView getMovies={token => this.getMovies(token)} />
+          </Col>
 
-            if (movies.length === 0) return <div className="main-view" />;
-            
-            return <Col>
-              <ProfileView movies={movies} />
-            </Col>
-          }} />
-        </Row>
-      </Router>
+          if (movies.length === 0) return <div className="main-view" />;
+          
+          return <Col>
+            <ProfileView movies={movies} />
+          </Col>
+        }} />
+      </Row>
     );
   }
 }
