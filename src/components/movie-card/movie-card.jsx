@@ -10,7 +10,21 @@ import { Link } from 'react-router-dom';
 import './movie-card.scss';
 
 export class MovieCard extends React.Component {
-  addToFavorites(movieID) {
+  constructor() {
+    super();
+
+    this.state = {
+      addedToFavorite: false
+    }
+  }
+  
+  setAddedToFavorites() {
+    this.setState({
+      addedToFavorites: true
+    });
+  }
+
+  addToFavorites(e, movieID) {
     const token = localStorage.getItem('token');
     const userName = localStorage.getItem('user');
 
@@ -20,6 +34,7 @@ export class MovieCard extends React.Component {
     .then(response => {
       const data = response.data;
       console.log(data);
+      this.setAddedToFavorites();
     })
     .catch(function (err) {
       console.error(err);
@@ -27,18 +42,24 @@ export class MovieCard extends React.Component {
   }
 
   render() {
+    const { addedToFavorites } = this.state;
     const { movie } = this.props;
 
     return (
-      <Card>
-        <Card.Img variant="top" src={movie.ImagePath} />
-        <Card.Body>
+      <Card className="card--full-height">
+        <Card.Img className="card-img-top--max-width" variant="top" src={`images/${movie.ImagePath}`} />
+        <Card.Body className="card-body--body-flex">
           <Card.Title>{movie.Title}</Card.Title>
           <Card.Text>{movie.Description}</Card.Text>
-          <Link to={`/movies/${movie._id}`}>
-            <Button variant="link">Open</Button>
-          </Link>
-          <Button variant="link" onClick={e => this.addToFavorites(movie._id)}>Add to Favorites</Button>
+          <div className="card-actions">
+            <Link to={`/movies/${movie._id}`}>
+              <Button variant="link">Open</Button>
+            </Link>
+            {addedToFavorites
+              ? <span className="btn btn-outline-success ml-auto">Added!</span>
+              : <Button className="ml-auto" variant="link" onClick={e => this.addToFavorites(e, movie._id)}>Add to Favorites</Button>
+            }
+          </div>
         </Card.Body>
       </Card>
     );
