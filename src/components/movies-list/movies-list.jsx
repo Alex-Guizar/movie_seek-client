@@ -1,11 +1,14 @@
+// Packages
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+// React-Bootstrap Components
 import Col from 'react-bootstrap/Col';
 
+// Custom Components
 import VisibilityFilterInput from '../visibility-filter-input/visibility-filter-input';
-import { MovieCard } from '../movie-card/movie-card';
+import MovieCard from '../movie-card/movie-card';
 
 function MoviesList(props) {
   const { movies, visibilityFilter } = props;

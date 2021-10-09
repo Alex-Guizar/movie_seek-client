@@ -1,20 +1,27 @@
+// Packages
 import React from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
+// Actions
+import { setFavorites } from '../../actions/actions';
+
+// React-Bootstrap Components
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 
-import { Link } from 'react-router-dom';
-
 import './movie-card.scss';
 
-export class MovieCard extends React.Component {
-  constructor() {
-    super();
+class MovieCard extends React.Component {
+  constructor(props) {
+    super(props);
+
+    const isFavorite = this.props.favorites.includes(this.props.movie._id);
 
     this.state = {
-      addedToFavorite: false
+      addedToFavorites: isFavorite
     }
   }
   
@@ -24,7 +31,7 @@ export class MovieCard extends React.Component {
     });
   }
 
-  addToFavorites(e, movieID) {
+  addToFavorites(movieID) {
     const token = localStorage.getItem('token');
     const userName = localStorage.getItem('user');
 
@@ -33,8 +40,9 @@ export class MovieCard extends React.Component {
     })
     .then(response => {
       const data = response.data;
-      console.log(data);
       this.setAddedToFavorites();
+      this.props.setFavorites(data.FavoriteMovies);
+      localStorage.setItem('favorites', JSON.stringify(data.FavoriteMovies));
     })
     .catch(function (err) {
       console.error(err);
@@ -57,13 +65,17 @@ export class MovieCard extends React.Component {
             </Link>
             {addedToFavorites
               ? <span className="btn btn-outline-success ml-auto">Added!</span>
-              : <Button className="ml-auto" variant="link" onClick={e => this.addToFavorites(e, movie._id)}>Add to Favorites</Button>
+              : <Button className="ml-auto" variant="link" onClick={e => this.addToFavorites(movie._id)}>Add to Favorites</Button>
             }
           </div>
         </Card.Body>
       </Card>
     );
   }
+}
+
+const mapStateToProps = state => {
+  return { favorites: state.favorites };
 }
 
 MovieCard.propTypes = {
@@ -87,5 +99,9 @@ MovieCard.propTypes = {
         PropTypes.bool
       ])
     })
-  }).isRequired
+  }).isRequired,
+  favorites: PropTypes.array.isRequired,
+  setFavorites: PropTypes.func.isRequired
 };
+
+export default connect(mapStateToProps, { setFavorites })(MovieCard);

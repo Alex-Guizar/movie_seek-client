@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 // Actions
-import { setUser } from '../../actions/actions';
+import { setUser, setFavorites } from '../../actions/actions';
 
 // React-Bootstrap Components
 import Form from 'react-bootstrap/Form';
@@ -23,11 +23,12 @@ function LoginView(props) {
   const [ errorText, setErrorText ] = useState('');
 
   const onLoggedIn = authData => {
-    console.log(authData);
     props.setUser(authData.user.Username);
+    props.setFavorites(authData.user.FavoriteMovies);
 
     localStorage.setItem('token', authData.token);
     localStorage.setItem('user', authData.user.Username);
+    localStorage.setItem('favorites', JSON.stringify(authData.user.FavoriteMovies));
     props.getMovies(authData.token);
   }
 
@@ -115,7 +116,8 @@ const mapStateToProps = state => {
 LoginView.propTypes = {
   user: PropTypes.string.isRequired,
   setUser: PropTypes.func.isRequired,
-  getMovies: PropTypes.func.isRequired
+  getMovies: PropTypes.func.isRequired,
+  setFavorites: PropTypes.func.isRequired
 };
 
-export default connect(mapStateToProps, { setUser })(LoginView);
+export default connect(mapStateToProps, { setUser, setFavorites })(LoginView);

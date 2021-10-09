@@ -6,16 +6,16 @@ import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 import { connect } from 'react-redux';
 
 // Actions
-import { setMovies, setUser } from '../../actions/actions';
+import { setMovies, setUser, setFavorites } from '../../actions/actions';
 
 // Custom Components
 import MoviesList from '../movies-list/movies-list';
 import LoginView from '../login-view/login-view';
+import ProfileView from '../profile-view/profile-view';
 import { RegistrationView } from '../registration-view/registration-view';
 import { MovieView } from '../movie-view/movie-view';
 import { DirectorView } from '../director-view/director-view';
 import { GenreView } from '../genre-view/genre-view';
-import { ProfileView } from '../profile-view/profile-view';
 
 // React-Bootstrap Components
 import Col from 'react-bootstrap/Col';
@@ -27,7 +27,9 @@ class MainView extends React.Component {
   componentDidMount() {
     let accessToken = localStorage.getItem('token');
     if (accessToken !== null) {
+      let favMovies = localStorage.getItem('favorites') ? JSON.parse(localStorage.getItem('favorites')) : [];
       this.props.setUser(localStorage.getItem('user'));
+      this.props.setFavorites(favMovies);
       this.getMovies(accessToken);
     }
   }
@@ -128,15 +130,18 @@ class MainView extends React.Component {
 let mapStateToProps = state => {
   return {
     movies: state.movies,
-    user: state.user
+    user: state.user,
+    favorites: state.favorites
   }
 }
 
 MainView.propTypes = {
   movies: PropTypes.array.isRequired,
   user: PropTypes.string.isRequired,
+  favorites: PropTypes.array.isRequired,
   setMovies: PropTypes.func.isRequired,
-  setUser: PropTypes.func.isRequired
+  setUser: PropTypes.func.isRequired,
+  setFavorites: PropTypes.func.isRequired
 }
 
-export default connect(mapStateToProps, { setMovies, setUser })(MainView);
+export default connect(mapStateToProps, { setMovies, setUser, setFavorites })(MainView);
